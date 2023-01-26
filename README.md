@@ -5,7 +5,7 @@ Instrucoes:
 
 Clone o repositorio
 
-```git clone ```
+```git clone git@github.com:edupoli/zap-gpt.git```
 
 Instale as dependencias
 
