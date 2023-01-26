@@ -47,24 +47,23 @@ whatsapp.on("ready", () => {
 async function main() {
   whatsapp.on("message", (message) => {
     (async () => {
-      console.log(
-        `From: ${message._data.id.remote} (${message._data.notifyName})`
-      );
-
-      console.log(`Message: ${message.body}`);
-
       const chat = await message.getChat();
 
       if (
-        chat.isGroup &&
-        !message.mentionedIds.includes(whatsapp.info.wid._serialized)
-      )
-        return;
+        message.from !== "status@broadcast" &&
+        message.type === "chat" &&
+        message.broadcast === false &&
+        chat.isGroup === false
+      ) {
+        console.log(`From: ${message.from} (${message._data.notifyName})`);
 
-      const response = await sendToOpenApi(message.body);
-      console.log(`Resposta do chat GPT: ${response}`);
+        console.log(`Message: ${message.body}`);
 
-      message.reply(response);
+        const response = await sendToOpenApi(message.body);
+        console.log(`Resposta do chat GPT: ${response}`);
+
+        message.reply(response);
+      }
     })();
   });
 }
